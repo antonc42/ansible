@@ -29,6 +29,7 @@ from hashlib import sha256
 from io import BytesIO
 from importlib.metadata import distribution
 from itertools import chain
+from ansible.utils.path import unfrackpath
 
 try:
     from packaging.requirements import Requirement as PkgReq
@@ -1048,7 +1049,7 @@ def _build_files_manifest(b_collection_path, namespace, name, ignore_patterns):
     def _walk(b_path, b_top_level_dir):
         for b_item in os.listdir(b_path):
             b_abs_path = os.path.join(b_path, b_item)
-            b_rel_base_dir = b'' if b_path == b_top_level_dir else b_path[len(b_top_level_dir) + 1:]
+            b_rel_base_dir = b'' if b_path == b_top_level_dir else b_path[len(os.path.basename(unfrackpath(b_top_level_dir))) + 1:]
             b_rel_path = os.path.join(b_rel_base_dir, b_item)
             rel_path = to_text(b_rel_path, errors='surrogate_or_strict')
 
